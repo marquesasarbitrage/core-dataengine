@@ -1,0 +1,33 @@
+-> HTTPService should be a standalone object with url to initiate it : keep it as is (add the fixing timestamp at which the service is run)
+
+-> MongoMarketDataService should be an object which: 
+- can stream the data 
+- write it in mongo 
+- get it from mongo 
+- stream&write function that can be run continuously 
+
+-> For example : Yahoo Finance SOFR Quotes once you stream it you can: 
+- if streamed, Access directly the data 
+- if streamed, write the data in mongo 
+- if written in mongo, access the data directly from mongo 
+- Access old written data on mongo 
+
+->> DATA IS RAW (_id ; _timestamp ; _raw_data)
+
+database marketdata 
+
+raw
+
+yfinance.sofr.futquotes.raw
+yfinance.sofr.swapfutquotes.raw
+
+deribit.assets.raw
+deribit.combo.raw
+
+deribit.quotes.raw
+
+deribit.assets.processed
+deribit.combo.processed
+
+
+-> DeribitAsset could access both the processes and raw data 
