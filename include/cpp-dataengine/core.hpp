@@ -3,6 +3,7 @@
 #include <string>
 #include <exception>
 #include <memory>
+#include <optional>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 #include <bsoncxx/builder/basic/document.hpp>
@@ -63,6 +64,17 @@ class MongoService
         std::string getDatabaseName() const; 
         std::string getCollectionName() const; 
 
+        void addBulkInsert(const nlohmann::json& data); 
+        void addBulkDeleteFromId(const std::string& _id); 
+        void addBulkDeleteAll(); 
+        void confirmingBulkDeleteAll(bool value);
+
+        void cleanBulk(); 
+        void runBulk();
+        void setBulkOrdered(bool value); 
+        std::optional<mongocxx::result::bulk_write> getBulkResult() const;
+        std::exception_ptr getBulkException() const;
+
         nlohmann::json getAll(); 
         nlohmann::json getFromId(std::string _id);
         nlohmann::json getFromFilter(bsoncxx::document::view_or_value filter); 
@@ -72,12 +84,18 @@ class MongoService
         std::string databaseName_; 
         std::string collectionName_;
 
+        mongocxx::bulk_write bulk_;
+        bool bulkOrdered_;
+        bool confirmedBulkDelete_;
+        std::optional<mongocxx::result::bulk_write> bulkResult_;
+        std::exception_ptr bulkExceptionPtr_;
+
+
+
         static nlohmann::json getFallBackJson(const std::exception& exception); 
         static nlohmann::json getSuccesfullJson(const nlohmann::json& result); 
         nlohmann::json getParsedBson(const bsoncxx::document::view& doc);
+
+
         
 };
-
-
-
-
