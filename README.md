@@ -1,2 +1,2 @@
 # cpp-dataengine
-Dataengine developed in C++ 
+C++ data engine library
