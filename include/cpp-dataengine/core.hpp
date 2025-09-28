@@ -1,18 +1,57 @@
 #pragma once 
+// CORE 
 #include <iostream>
 #include <string>
 #include <exception>
 #include <memory>
+#include <map>
 #include <optional>
+#include <filesystem>
+#include <sstream>
+#include <fstream>
+#include <optional>
+// cpp-dataengine errors
+#include "errors.hpp"
+// CURL
 #include <curl/curl.h>
+// NLOHMANN JSON
 #include <nlohmann/json.hpp>
+// BSON
 #include <bsoncxx/builder/basic/document.hpp>
 #include <bsoncxx/builder/stream/document.hpp>
 #include <bsoncxx/builder/stream/helpers.hpp>
 #include <bsoncxx/json.hpp>
+// MONGO 
 #include <mongocxx/client.hpp>
 #include <mongocxx/instance.hpp>
 #include <mongocxx/uri.hpp>
+// PYBIND 
+#include <pybind11/pybind11.h>
+#include <pybind11/embed.h> 
+
+namespace py = pybind11;
+
+namespace DataEngineTool 
+{
+    std::string trim(const std::string& input); 
+};
+
+
+class DataEngineEnvFileLoad
+{
+    public:
+        DataEngineEnvFileLoad(const std::string& buildName);
+        ~DataEngineEnvFileLoad(){}; 
+
+        std::string getVariable(const std::string& key) const; 
+        void printKeyMap() const; 
+    
+    private: 
+        std::string buildName_;
+        std::map<std::string, std::string> keyMap_;
+        void loadMap(); 
+        
+};
 
 class HTTPRequest
 {
@@ -96,6 +135,6 @@ class MongoService
         static nlohmann::json getSuccesfullJson(const nlohmann::json& result); 
         nlohmann::json getParsedBson(const bsoncxx::document::view& doc);
 
-
         
 };
+

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/cpp-marketdata/core.hpp"
+#include "../include/cpp-dataengine/core.hpp"
 
 
 void testHTTP()
@@ -16,7 +16,7 @@ void testHTTP()
     std::cout << request.getData() << std::endl; 
 }
 
-void testYahoFinance()
+void testYahooFinance()
 {
     YahooFinanceRequest request("https://query1.finance.yahoo.com/v7/finance/quote?symbols=AAPL");
     request.run(); 
@@ -35,6 +35,6 @@ void testYahoFinance()
 int main()
 {
     testHTTP(); 
-    testYahoFinance();
+    testYahooFinance();
     return 0; 
 }

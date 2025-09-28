@@ -1,11 +1,5 @@
 #include <iostream>
 #include "../include/cpp-dataengine/core.hpp"
-#include <pybind11/pybind11.h>
-#include <pybind11/embed.h> 
-#include <filesystem>
-#include <sstream>
-
-namespace py = pybind11;
 
 HTTPRequest::HTTPRequest(const std::string& url):url_(url), exceptionPtr_(nullptr) {};
 YahooFinanceRequest::YahooFinanceRequest(const std::string& url): HTTPRequest(url){}; 
@@ -56,7 +50,7 @@ size_t HTTPRequest::writeCallback(void* contents, size_t size, size_t nmemb, voi
 
 std::string YahooFinanceRequest::getPythonVirtualEnvPath()
 {
-    std::string libraryName = "cpp-marketdata";
+    std::string libraryName = "cpp-dataengine";
     std::filesystem::path cwd = std::filesystem::current_path();
     std::vector<std::string> result;
 
@@ -100,6 +94,7 @@ void YahooFinanceRequest::run()
         py::object yfDataInstance = yfData();
         std::string data = yfDataInstance.attr("get")(getUrl()).attr("text").cast<std::string>();
         setData(nlohmann::json::parse(data));
+        setException(nullptr);
         
     } catch (const std::exception &e) {
         setData(nlohmann::json::object()); // empty JSON

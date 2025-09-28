@@ -28,7 +28,7 @@ void MongoService::runBulk()
     mongocxx::options::bulk_write opts;
     opts.ordered(bulkOrdered_);
     try{
-        bulkResult_ = getCollection().bulk_write(bulk_, opts);
+        bulkResult_ = bulk_.execute();
     }catch (const std::exception& e) {
         bulkExceptionPtr_ = std::current_exception();
     }
@@ -42,6 +42,7 @@ nlohmann::json MongoService::getFallBackJson(const std::exception& exception)
         {"success", "false"},
         {"error", exception.what()}
     };
+    return response;
 }
 
 nlohmann::json MongoService::getSuccesfullJson(const nlohmann::json& result)
@@ -52,6 +53,7 @@ nlohmann::json MongoService::getSuccesfullJson(const nlohmann::json& result)
         {"success", "true"},
         {"error", "none"}
     };
+    return response;
 }
 
 nlohmann::json MongoService::getParsedBson(const bsoncxx::document::view& doc) {
