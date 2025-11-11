@@ -12,12 +12,6 @@ FetchContent_MakeAvailable(curl)
 FetchContent_Declare(mongocxx URL https://github.com/mongodb/mongo-cxx-driver/releases/download/r4.1.2/mongo-cxx-driver-r4.1.2.tar.gz)
 FetchContent_MakeAvailable(mongocxx)
 
-IF (NOT TARGET uninstall)
-  ADD_CUSTOM_TARGET(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
-  if(ENABLE_SOLUTION_FOLDERS)
-    set_target_properties(uninstall PROPERTIES FOLDER "CMakeTargets")
-  endif()
-endif()
 
 
 
