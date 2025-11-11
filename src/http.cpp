@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/cpp-dataengine/core.hpp"
+#include "../include/core-dataengine/http.hpp"
 
 HTTPRequest::HTTPRequest(const std::string& url):url_(url), exceptionPtr_(nullptr) {};
 YahooFinanceRequest::YahooFinanceRequest(const std::string& url): HTTPRequest(url){}; 
@@ -50,7 +50,7 @@ size_t HTTPRequest::writeCallback(void* contents, size_t size, size_t nmemb, voi
 
 std::string YahooFinanceRequest::getPythonVirtualEnvPath()
 {
-    std::string libraryName = "cpp-dataengine";
+    std::string libraryName = "core-dataengine";
     std::filesystem::path cwd = std::filesystem::current_path();
     std::vector<std::string> result;
 

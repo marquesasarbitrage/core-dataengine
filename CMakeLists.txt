@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(cpp-dataengine VERSION 1.0 LANGUAGES CXX)
+project(core-dataengine VERSION 1.0 LANGUAGES CXX)
 
 # Set C++ standard globally
 set(CMAKE_CXX_STANDARD 17)

@@ -1,5 +1,4 @@
 #pragma once 
-// CORE 
 #include <iostream>
 #include <string>
 #include <exception>
@@ -9,85 +8,15 @@
 #include <filesystem>
 #include <sstream>
 #include <fstream>
-#include <optional>
-// cpp-dataengine errors
 #include "errors.hpp"
-// CURL
-#include <curl/curl.h>
-// NLOHMANN JSON
 #include <nlohmann/json.hpp>
-// BSON
 #include <bsoncxx/builder/basic/document.hpp>
 #include <bsoncxx/builder/stream/document.hpp>
 #include <bsoncxx/builder/stream/helpers.hpp>
 #include <bsoncxx/json.hpp>
-// MONGO 
 #include <mongocxx/client.hpp>
 #include <mongocxx/instance.hpp>
 #include <mongocxx/uri.hpp>
-// PYBIND 
-#include <pybind11/pybind11.h>
-#include <pybind11/embed.h> 
-
-namespace py = pybind11;
-
-namespace DataEngineTool 
-{
-    std::string trim(const std::string& input); 
-};
-
-
-class DataEngineEnvFileLoad
-{
-    public:
-        DataEngineEnvFileLoad(const std::string& buildName);
-        ~DataEngineEnvFileLoad(){}; 
-
-        std::string getVariable(const std::string& key) const; 
-        void printKeyMap() const; 
-    
-    private: 
-        std::string buildName_;
-        std::map<std::string, std::string> keyMap_;
-        void loadMap(); 
-        
-};
-
-class HTTPRequest
-{
-    public:
-        HTTPRequest(const std::string& url);
-        virtual ~HTTPRequest(){};
-
-        std::string getUrl() const;
-        void setUrl(const std::string& url);
-        virtual void run();
-        nlohmann::json getData() const;
-        std::exception_ptr getException() const;
-        
-    
-    protected: 
-        void setException(const std::exception_ptr& exceptionPtr); 
-        void setData(const nlohmann::json& data);
-
-    private:
-        std::string url_; 
-        nlohmann::json data_;
-        std::exception_ptr exceptionPtr_;
-        static size_t writeCallback(void* contents, size_t size, size_t nmemb, void* userp);
-
-};
-
-class YahooFinanceRequest final: public HTTPRequest
-{
-    public: 
-        YahooFinanceRequest(const std::string& url);
-        ~YahooFinanceRequest(){};
-        virtual void run() override; 
-    
-    private: 
-        std::string getPythonVirtualEnvPath();
-}; 
 
 class MongoService
 {
@@ -137,4 +66,3 @@ class MongoService
 
         
 };
-
