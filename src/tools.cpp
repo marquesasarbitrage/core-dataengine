@@ -77,7 +77,6 @@ namespace DataEngineTools
 
     std::string DotEnv::getVariable(const std::string& key) const 
     {
-        std::cout << key << std::endl;
         auto it = keyMap_.find(key);
         if (it != keyMap_.end()) {
             return it->second;
