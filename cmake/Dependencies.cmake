@@ -1,5 +1,12 @@
 include(FetchContent)
 
+FetchContent_Declare(
+    core-datetime
+    GIT_REPOSITORY ssh://git@github.com/marquesasarbitrage/core-datetime.git
+    GIT_TAG main  # or a release tag
+)
+FetchContent_MakeAvailable(core-datetime)
+
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz)
 FetchContent_MakeAvailable(json)
 
@@ -11,7 +18,6 @@ FetchContent_MakeAvailable(curl)
 
 FetchContent_Declare(mongocxx URL https://github.com/mongodb/mongo-cxx-driver/releases/download/r4.1.2/mongo-cxx-driver-r4.1.2.tar.gz)
 FetchContent_MakeAvailable(mongocxx)
-
 
 
 

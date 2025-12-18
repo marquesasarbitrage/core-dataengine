@@ -3,6 +3,34 @@
 
 namespace DataEngineTools
 {
+
+    double stringToDouble(const std::string& input) {
+
+        if (input.empty()) throw DataEngineErrorRegistry::Tools::EmptyStringError();
+
+        size_t pos = 0;
+        double value = std::stod(input, &pos);
+
+        if (pos != input.size())
+            throw DataEngineErrorRegistry::Tools::InvalidStringError();
+
+        return value;
+    }
+
+    int stringToInt(const std::string& input) {
+
+        if (input.empty()) throw DataEngineErrorRegistry::Tools::EmptyStringError();
+        int value{};
+        auto [ptr, ec] = std::from_chars(
+            input.data(),
+            input.data() + input.size(),
+            value
+        );
+
+        if (ec==std::errc{}) return value; 
+        else throw DataEngineErrorRegistry::Tools::InvalidStringError();
+    }
+
     std::string trim(const std::string& input)
     {
             size_t start = 0;
@@ -46,7 +74,7 @@ namespace DataEngineTools
             }
             
         }
-        if (!buildNameFound) throw DateEngineErrorRegistry::DotEnv::UnknownBuildName();
+        if (!buildNameFound) throw DataEngineErrorRegistry::DotEnv::UnknownBuildName();
 
         std::string path; 
         for (std::string& s : result)
@@ -57,7 +85,7 @@ namespace DataEngineTools
         path += ".env";
         std::ifstream file(path);
         std::string line;
-        if (!file.is_open()) throw DateEngineErrorRegistry::DotEnv::OpenFileError();
+        if (!file.is_open()) throw DataEngineErrorRegistry::DotEnv::OpenFileError();
 
         while (std::getline(file, line)) {
             // Skip empty lines or comments
@@ -81,7 +109,7 @@ namespace DataEngineTools
         if (it != keyMap_.end()) {
             return it->second;
         } else {
-            throw DateEngineErrorRegistry::DotEnv::UnknownKeyError();
+            throw DataEngineErrorRegistry::DotEnv::UnknownKeyError();
         }
     }
 

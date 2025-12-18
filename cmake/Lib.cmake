@@ -3,8 +3,11 @@ add_library(core-dataengine
         src/http.cpp 
         src/mongo.cpp 
         src/errors.cpp 
-        src/tools.cpp)
+        src/tools.cpp
+        src/interfaces/base.cpp
+        src/interfaces/fredstlouis.cpp)
 
+target_link_libraries(core-dataengine PUBLIC core-datetime)  
 target_link_libraries(core-dataengine PUBLIC pybind11::embed)
 target_link_libraries(core-dataengine PUBLIC nlohmann_json::nlohmann_json)
 target_link_libraries(core-dataengine PRIVATE CURL::libcurl)

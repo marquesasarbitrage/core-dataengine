@@ -1,18 +1,29 @@
 #include <iostream>
 #include "../include/core-dataengine/http.hpp"
 
-HTTPRequest::HTTPRequest(const std::string& url):url_(url), exceptionPtr_(nullptr) {};
-YahooFinanceRequest::YahooFinanceRequest(const std::string& url): HTTPRequest(url){}; 
+HTTPRequest::HTTPRequest(const std::string& url):url_(url), exceptionPtr_(nullptr) {run();};
 
-nlohmann::json HTTPRequest::getData() const {return data_;}
-std::exception_ptr HTTPRequest::getException() const {return exceptionPtr_;}
-std::string HTTPRequest::getUrl() const{return url_;}
-void HTTPRequest::setException(const std::exception_ptr& exceptionPtr){exceptionPtr_ = exceptionPtr;}
-void HTTPRequest::setData(const nlohmann::json& data){data_=data;}
-void HTTPRequest::setUrl(const std::string& url){url_ = url;}
+YahooFinanceRequest::YahooFinanceRequest(const std::string& url): HTTPRequest(url){run();}; 
+
+std::shared_ptr<nlohmann::json> HTTPRequest::getData() const { return dataPtr_; }
+
+std::exception_ptr HTTPRequest::getException() const { return exceptionPtr_; }
+
+std::string HTTPRequest::getUrl() const{ return url_; }
+
+DateTime HTTPRequest::getTimestamp() const{ return timestamp_; }
+
+bool HTTPRequest::isSuccess() const{ return getException() == nullptr ? true : false; }
+
+void HTTPRequest::setException(const std::exception_ptr& exceptionPtr){ exceptionPtr_ = exceptionPtr; }
+
+void HTTPRequest::setData(const nlohmann::json& data){ dataPtr_=std::make_shared<nlohmann::json>(data); }
+
+void HTTPRequest::setTimestamp() { timestamp_ = DateTime(); }
 
 void HTTPRequest::run() 
 {
+    setTimestamp();
     try {
         std::string response;
 
@@ -35,9 +46,10 @@ void HTTPRequest::run()
         setData(nlohmann::json::parse(response));
     }
     catch (const std::exception& e) {
-        setData(nlohmann::json::object()); // empty JSON
+        setData(nullptr); // empty JSON
         setException(std::current_exception());
     }
+    
 }
 
 size_t HTTPRequest::writeCallback(void* contents, size_t size, size_t nmemb, void* userp) 
@@ -83,8 +95,6 @@ std::string YahooFinanceRequest::getPythonVirtualEnvPath()
 
 void YahooFinanceRequest::run()
 {
-     // start the Python interpreter
-
     try {
         py::scoped_interpreter guard{};
         py::module_ sys = py::module_::import("sys");
@@ -97,7 +107,8 @@ void YahooFinanceRequest::run()
         setException(nullptr);
         
     } catch (const std::exception &e) {
-        setData(nlohmann::json::object()); // empty JSON
+        setData(nullptr); 
         setException(std::current_exception());
     }
 };
+

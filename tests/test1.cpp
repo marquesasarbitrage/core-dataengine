@@ -5,7 +5,6 @@
 void testHTTP()
 {
     HTTPRequest request("https://deribit.com/api/v2/public/get_instruments?currency=any");
-    request.run(); 
     if (request.getException()){
         try {
             std::rethrow_exception(request.getException());
@@ -19,7 +18,6 @@ void testHTTP()
 void testYahooFinance()
 {
     YahooFinanceRequest request("https://query1.finance.yahoo.com/v7/finance/quote?symbols=AAPL");
-    request.run(); 
     if (request.getException()){
         try {
             std::rethrow_exception(request.getException());
