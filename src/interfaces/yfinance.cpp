@@ -18,17 +18,17 @@ namespace DataInterfaces {
                 if (!data0.contains("finance")) throw DataEngineErrorRegistry::DataInterfaces::JSONKeyError("finance"); 
                 nlohmann::json finance = data0["finance"];
                 if (!finance.contains("result")) throw DataEngineErrorRegistry::DataInterfaces::JSONKeyError("result"); 
-                nlohmann::json result = finance["result"]; 
+                nlohmann::json result = finance["result"][0]; 
                 if (!result.contains("documents")) throw DataEngineErrorRegistry::DataInterfaces::JSONKeyError("documents"); 
                 if (!result["documents"].is_array()) throw DataEngineErrorRegistry::DataInterfaces::JSONArrayError("documents");
 
-                return std::make_shared<nlohmann::json>(data0);
+                return std::make_shared<nlohmann::json>(result);
 
             }
 
             void FutureDataInfo::_run(){
 
-                HTTPRequest request(getBaseURLv1() + "lookup?query=" + query_ + "&quoteType=future/future?start=0&count=10000"); 
+                YahooFinanceRequest request(getBaseURLv1() + "lookup?query=" + query_ + "&quoteType=future/future?start=0&count=10000"); 
                 if (request.isSuccess()) {
 
                     std::map<int, nlohmann::json> dataMap = {{0, *request.getData()}};
@@ -47,7 +47,8 @@ namespace DataInterfaces {
             std::vector<std::string> SOFRFutureInfo::getTickers() const {
 
                 std::vector<std::string> output; 
-                for (const auto& item : getData()["documents"]) {
+                nlohmann::json documents = getData()["documents"];
+                for (const auto& item : documents) {
 
                     if (!item.contains("symbol")) continue;
                     std::string symbol = item["symbol"];
@@ -64,7 +65,8 @@ namespace DataInterfaces {
             std::vector<std::string> ErisSOFRSwapFutureInfo::getTickers() const {
 
                 std::vector<std::string> output; 
-                for (const auto& item : getData()["documents"]) {
+                nlohmann::json documents = getData()["documents"];
+                for (const auto& item : documents) {
 
                     if (!item.contains("symbol")) continue;
                     if (!item.contains("quoteType")) continue;
@@ -89,7 +91,16 @@ namespace DataInterfaces {
                 if (!response.contains("result")) throw DataEngineErrorRegistry::DataInterfaces::JSONKeyError("result"); 
                 if (!response["result"].is_array()) throw DataEngineErrorRegistry::DataInterfaces::JSONArrayError("result");
                 nlohmann::json result = response["result"]; 
-                return std::make_shared<nlohmann::json>(data0); 
+                std::map<std::string, nlohmann::json> outputMap_;
+                for (const auto& item : result) {
+
+                    if (!item.contains("symbol")) continue; 
+                    else {
+                        outputMap_[item["symbol"]] = item;
+                    }
+
+                }
+                return std::make_shared<nlohmann::json>(outputMap_); 
 
             }
 

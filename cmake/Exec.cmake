@@ -10,3 +10,5 @@ target_link_libraries(dataengine-interfaces-fredstlouis PUBLIC core-dataengine)
 add_executable(dataengine-interfaces-deribit ${CMAKE_CURRENT_SOURCE_DIR}/tests/interfaces/deribit.cpp)
 target_link_libraries(dataengine-interfaces-deribit PUBLIC core-dataengine)
 
+add_executable(dataengine-interfaces-yfinance ${CMAKE_CURRENT_SOURCE_DIR}/tests/interfaces/yfinance.cpp)
+target_link_libraries(dataengine-interfaces-yfinance PUBLIC core-dataengine)

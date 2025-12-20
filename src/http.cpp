@@ -93,10 +93,12 @@ std::string YahooFinanceRequest::getPythonVirtualEnvPath()
     }
 }
 
+void YahooFinanceRequest::ensurePythonInitialized() { static py::scoped_interpreter guard{}; }
+
 void YahooFinanceRequest::run()
 {
     try {
-        py::scoped_interpreter guard{};
+        ensurePythonInitialized();
         py::module_ sys = py::module_::import("sys");
         sys.attr("path").attr("insert")(0, getPythonVirtualEnvPath());
         py::module_ yFinance = py::module_::import("yfinance");

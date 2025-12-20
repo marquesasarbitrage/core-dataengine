@@ -44,7 +44,9 @@ class YahooFinanceRequest final: public HTTPRequest
 
         virtual void run() override; 
         
+        
     private: 
+        void ensurePythonInitialized();
         std::string getPythonVirtualEnvPath();
 }; 
 
