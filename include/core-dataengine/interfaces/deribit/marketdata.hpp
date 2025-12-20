@@ -1,6 +1,6 @@
 #pragma once 
 #include <iostream>
-#include "base.hpp"
+#include "../../../include/core-dataengine/interfaces/base.hpp"
 #include "../../../include/core-dataengine/tools.hpp"
 #include "core-datetime/tools.hpp"
 
@@ -32,10 +32,38 @@ namespace DataInterfaces {
                 virtual std::shared_ptr<nlohmann::json> _processData(std::map<int, nlohmann::json> dataMap) override;
                 virtual void _run() override;
             
-            private: 
-                std::string urlInstruments_; 
-                std::string urlCombos_; 
 
+        };
+
+        class SummmaryOrderBook : public DeribitMarketDataInterface {
+
+            public: 
+                SummmaryOrderBook(); 
+                SummmaryOrderBook(std::map<int, nlohmann::json> summaryOrderbookMap);
+                ~SummmaryOrderBook() = default; 
+
+            protected: 
+                virtual std::shared_ptr<nlohmann::json> _processData(std::map<int, nlohmann::json> dataMap) override;
+                virtual void _run() override;
+        };
+
+        class OrderBook : public DeribitMarketDataInterface {
+
+            public: 
+                OrderBook(std::string instrumentName); 
+                OrderBook(std::string instrumentName, int depth); 
+                OrderBook(nlohmann::json orderBookData);
+                ~OrderBook() = default;
+                
+                std::string getInstrumentName() const; 
+            
+            protected: 
+                virtual std::shared_ptr<nlohmann::json> _processData(std::map<int, nlohmann::json> dataMap) override;
+                virtual void _run() override;
+            
+            private: 
+                int depth_;
+                std::string instrumentName_;
         };
     
     };

@@ -2,7 +2,7 @@
 #include <cassert>
 #include "../../include/core-dataengine/interfaces/fredstlouis.hpp"
 
-void testSOFR() {
+void testTimeSerie() {
 
     DataInterfaces::FredStLouis::SOFRFixing sofrFixing = DataInterfaces::FredStLouis::SOFRFixing(); 
     sofrFixing.run();
@@ -16,7 +16,7 @@ void testSOFR() {
 
 int main() {
 
-    testSOFR();
+    testTimeSerie();
     std::cout << "All tests for the Fred St Louis interface has been passed." << std::endl;
     return 0; 
 }

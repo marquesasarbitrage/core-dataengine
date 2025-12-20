@@ -6,3 +6,7 @@ target_link_libraries(dataengine-test2 PUBLIC core-dataengine)
 
 add_executable(dataengine-interfaces-fredstlouis ${CMAKE_CURRENT_SOURCE_DIR}/tests/interfaces/fredstlouis.cpp)
 target_link_libraries(dataengine-interfaces-fredstlouis PUBLIC core-dataengine)
+
+add_executable(dataengine-interfaces-deribit ${CMAKE_CURRENT_SOURCE_DIR}/tests/interfaces/deribit.cpp)
+target_link_libraries(dataengine-interfaces-deribit PUBLIC core-dataengine)
+

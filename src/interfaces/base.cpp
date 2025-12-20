@@ -52,4 +52,5 @@ namespace DataInterfaces {
 
     bool DataInterface::isProcessed() const { return (getException()==nullptr && dataPtr_==nullptr) ? false : true ; }
 
+    
 }
